@@ -4,7 +4,7 @@ import 'package:tododatabase/utils/routes.dart';
 void main(){
   runApp(
     GetMaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false ,
       getPages: getpage,
     ),
   );

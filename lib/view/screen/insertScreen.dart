@@ -21,26 +21,31 @@ class _InsertScreenState extends State<InsertScreen> {
       child: Scaffold(
         body: Container(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(15),
             child: Column(
               children: [
                 SizedBox(
                   height: 30,
                 ),
-                TextField(
-                  controller: note,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Note..",
+                Card(
+                  elevation: 2,
+                  child: TextField(
+                    controller: note,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "     Note..",
+                    ),
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 70,
                 ),
                 ElevatedButton(
                   onPressed: () {
                     DBHelper.inte.insertDB(note.text);
-                  },
+                    hmc.getData();
+                    Get.back();
+                   },
                   child: Text("Add"),
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.orange.shade700),

@@ -13,11 +13,11 @@ class DBHelper {
   }
 
 
-  Database? initDB() {
+  Future<Database?> initDB() async{
     if (database != null) {
       return database;
     } else {
-      createDB();
+      return await createDB();
     }
   }
 
@@ -27,7 +27,7 @@ class DBHelper {
 
     return openDatabase(path, version: 1, onCreate: (db, version) {
       String query =
-          "CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT,note String)";
+          "CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT,note TEXT)";
       db.execute(query);
     });
   }
@@ -48,6 +48,7 @@ class DBHelper {
   }
 
   Future<List<Map<String, Object?>>> readDB() async {
+    database = await initDB();
     String query = "SELECT * FROM todo";
 
     return database!.rawQuery(query);
