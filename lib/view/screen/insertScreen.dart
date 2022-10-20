@@ -19,6 +19,13 @@ class _InsertScreenState extends State<InsertScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Add Notes",
+            style: TextStyle(fontSize: 25),
+          ),
+          backgroundColor: Colors.orange.shade700,
+        ),
         body: Container(
           child: Padding(
             padding: EdgeInsets.all(15),
@@ -33,7 +40,7 @@ class _InsertScreenState extends State<InsertScreen> {
                     controller: note,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "     Note..",
+                      hintText: "   Note..",
                     ),
                   ),
                 ),
@@ -45,10 +52,10 @@ class _InsertScreenState extends State<InsertScreen> {
                     DBHelper.inte.insertDB(note.text);
                     hmc.getData();
                     Get.back();
-                   },
+                  },
                   child: Text("Add"),
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.orange.shade700),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange.shade700),
                 ),
               ],
             ),

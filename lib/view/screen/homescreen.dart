@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeController hmc = Get.put(HomeController());
+  TextEditingController note = TextEditingController();
 
   @override
   void initState() {
@@ -25,7 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Notes"),
+          title: Text(
+            "Notes",
+            style: TextStyle(fontSize: 25),
+          ),
           backgroundColor: Colors.orange.shade700,
           actions: [
             IconButton(
@@ -35,20 +39,71 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Icons.add)),
           ],
         ),
-        body: Obx(
-          () => ListView.builder(
-              itemCount: hmc.l1.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 3,
-                  child: ListTile(
-                    leading: Text("${hmc.l1[index]['id']}"),
-                    title: Text("${hmc.l1[index]['note']}"),
-                  ),
-                );
-              }),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Obx(
+            () => ListView.builder(
+                itemCount: hmc.l1.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      note = TextEditingController(text: hmc.l1[index]['note']);
+                      update(hmc.l1[index]['id']);
+                    },
+                    child: Card(
+                      elevation: 3,
+                      child: Container(
+                        color: Colors.yellow.shade50,
+                        child: ListTile(
+                          leading: Text("${hmc.l1[index]['id']}"),
+                          title: Text("${hmc.l1[index]['note']}"),
+                          trailing: IconButton(
+                              onPressed: () {
+                                DBHelper.inte.deleteDB(hmc.l1[index]['id']);
+                                hmc.getData();
+                              },
+                              icon: Icon(Icons.delete)),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          ),
         ),
       ),
     );
+  }
+
+  void update(int id) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            actions: [
+              Card(
+                elevation: 2,
+                child: TextField(
+                  controller: note,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "     Note..",
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  DBHelper.inte.updateDB(note.text, id);
+                  hmc.getData();
+                },
+                child: Text("edit"),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange.shade700),
+              ),
+            ],
+          );
+        });
   }
 }
